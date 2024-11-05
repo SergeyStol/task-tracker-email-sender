@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.password=guest
+      - spring.rabbitmq.username=guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  rabbitmq:
+    image: rabbitmq:4.0.3-management
+    restart: "no"
+    ports:
+      - "5433:5432"
+      - "15672:15672"
+      - "5671:5671"
+      - "5672:5672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q status
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+volumes:
+  rabbitmq_data:

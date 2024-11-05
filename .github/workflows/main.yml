@@ -38,4 +38,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: sergeystol/task-tracker-rest-api:${{ steps.branch-names.outputs.current_branch }}
+          tags: sergeystol/task-tracker-email-sender:${{ steps.branch-names.outputs.current_branch }}
